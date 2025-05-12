@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MrWhopperJr - Weekly Gaming Content</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-yellow: #FFC107;
+            --secondary-white: #F5F5F5;
+            --accent-gray: #1A1A1A;
+            --sky-blue: #4FC3F7;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            background-color: var(--secondary-white);
+            color: var(--accent-gray);
+            overflow-x: hidden;
+        }
+
+        .header-font {
+            font-weight: 700;
+        }
+
+        .section-bg {
+            background-color: var(--sky-blue);
+        }
+
+        .card {
+            border: 1px solid var(--primary-yellow);
+            background: var(--secondary-white);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .button {
+            border: 2px solid var(--primary-yellow);
+            background: var(--primary-yellow);
+            color: var(--accent-gray);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .button:hover {
+            background: transparent;
+            color: var(--primary-yellow);
+        }
+
+        .avatar-container {
+            perspective: 1000px;
+        }
+
+        .avatar {
+            transition: transform 0.3s ease;
+            border: 3px solid var(--primary-yellow);
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .avatar:hover {
+            transform: scale(1.1);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .progress-bar {
+            height: 20px;
+            background: #e0e0e0;
+            border: 1px solid var(--primary-yellow);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-yellow);
+            transition: width 0.5s ease-in-out;
+        }
+
+        .video-thumbnail {
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            position: relative;
+        }
+
+        .video-thumbnail:hover {
+            border-color: var(--primary-yellow);
+            transform: scale(1.05);
+        }
+
+        .new-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--primary-yellow);
+            color: var(--accent-gray);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .divider {
+            height: 2px;
+            background: var(--primary-yellow);
+            margin: 2rem 0;
+        }
+
+        .sub-count {
+            font-weight: 600;
+            color: var(--primary-yellow);
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -3px;
+            left: 0;
+            background: var(--primary-yellow);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-yellow);
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-thumbnail:hover .video-overlay {
+            opacity: 1;
+        }
+
+        .logo {
+            border-radius: 12px;
+            object-fit: cover;
+        }
+
+        .event-card {
+            background: var(--primary-yellow);
+            color: var(--accent-gray);
+            border: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 640px) {
+            .avatar {
+                width: 200px !important;
+                height: 200px !important;
+            }
+
+            .logo {
+                width: 40px !important;
+                height: 40px !important;
+            }
+
+            .header-font.text-2xl {
+                font-size: 1.5rem;
+            }
+
+            .text-5xl {
+                font-size: 2.5rem;
+            }
+
+            .text-2xl {
+                font-size: 1.25rem;
+            }
+
+            .button {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+
+            .video-thumbnail img {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .avatar {
+                width: 250px !important;
+                height: 250px !important;
+            }
+
+            .logo {
+                width: 48px !important;
+                height: 48px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-[var(--accent-gray)] py-4 px-6 shadow-lg sticky top-0 z-50 border-b-2 border-[var(--primary-yellow)]">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="https://yt3.googleusercontent.com/ljsJXx9Rol7NIkIY2dI69FcKEEjJ2fS6VuuFQpadfQ55-5ip6cr1lhe5wgibEiTRwrwYVQ2_aYI=s160-c-k-c0x00ffffff-no-rj" alt="MrWhopperJr Logo" class="w-12 h-12 logo">
+                <div class="header-font text-2xl text-[var(--secondary-white)]">MrWhopperJr</div>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#about" class="nav-link text-[var(--secondary-white)] text-lg">About</a>
+                <a href="#events" class="nav-link text-[var(--secondary-white)] text-lg">Events</a>
+                <a href="#community" class="nav-link text-[var(--secondary-white)] text-lg">Community</a>
+                <a href="https://www.youtube.com/@mrwhopperjr?sub_confirmation=1" target="_blank" class="button px-6 py-2 text-lg">Subscribe</a>
+            </div>
+            <button class="md:hidden text-2xl text-[var(--primary-yellow)]" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="md:hidden hidden bg-[var(--accent-gray)] text-[var(--secondary-white)] w-full py-3 px-4 mt-2" id="mobile-menu">
+            <a href="#about" class="block py-2 hover:bg-[var(--primary-yellow)] hover:text-[var(--accent-gray)] px-3">About</a>
+            <a href="#events" class="block py-2 hover:bg-[var(--primary-yellow)] hover:text-[var(--accent-gray)] px-3">Events</a>
+            <a href="#community" class="block py-2 hover:bg-[var(--primary-yellow)] hover:text-[var(--accent-gray)] px-3">Community</a>
+            <a href="https://www.youtube.com/@mrwhopperjr?sub_confirmation=1" target="_blank" class="block button px-6 py-2 text-center mt-2">Subscribe</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center section-bg relative overflow-hidden">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between z-10">
+            <div class="md:w-1/2 mb-10 md:mb-0 fade-in">
+                <div class="text-lg text-[var(--accent-gray)] mb-2">Welcome to the Channel</div>
+                <h1 class="header-font text-5xl md:text-6xl text-[var(--accent-gray)] mb-4">MrWhopperJr</h1>
+                <h2 class="text-2xl text-[var(--accent-gray)] mb-6">Weekly Gaming Content</h2>
+
+                <div class="mb-8">
+                    <div class="flex items-center mb-2">
+                        <span class="sub-count">21/50</span>
+                        <span class="ml-2 text-lg">SUBSCRIBERS</span>
+                    </div>
+                    <div class="progress-bar w-full mb-2">
+                        <div class="progress-fill" style="width: 42%"></div>
+                    </div>
+                    <p class="text-sm">Next milestone: 50 subscribers!</p>
+                </div>
+
+                <div class="flex space-x-4">
+                    <a href="https://www.youtube.com/@mrwhopperjr" target="_blank" class="button px-6 py-3 text-lg flex items-center">
+                        <i class="fab fa-youtube mr-2"></i> Watch Now
+                    </a>
+                    <a href="https://discord.gg/VEF9vkc7dU" target="_blank" class="button px-6 py-3 text-lg flex items-center">
+                        <i class="fab fa-discord mr-2"></i> Join The Whopper World
+                    </a>
+                </div>
+            </div>
+
+            <div class="md:w-1/2 flex justify-center avatar-container fade-in">
+                <div class="avatar card rounded-full w-64 h-64 md:w-80 md:h-80 flex items-center justify-center">
+                    <img src="https://yt3.ggpht.com/ljsJXx9Rol7NIkIY2dI69FcKEEjJ2fS6VuuFQpadfQ55-5ip6cr1lhe5wgibEiTRwrwYVQ2_aYI=s160-c-k-c0x00ffffff-no-rj" alt="MrWhopperJr Avatar" class="w-full h-full logo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-[var(--secondary-white)] relative overflow-hidden">
+        <div class="divider"></div>
+        <div class="container mx-auto px-6">
+            <h2 class="header-font text-3xl md:text-4xl text-[var(--accent-gray)] mb-12 text-center fade-in">
+                About Me
+            </h2>
+
+            <div class="flex flex-col md:flex-row items-center fade-in">
+                <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8">
+                    <div class="card p-6">
+                        <h3 class="header-font text-2xl text-[var(--accent-gray)] mb-4">Who is MrWhopperJr?</h3>
+                        <p class="mb-4">I'm a passionate gamer creating weekly content focused on fun, strategy, and community engagement.</p>
+                        <p class="mb-4">Current focus: <span class="text-[var(--primary-yellow)] font-bold">VR Gaming Content</span> - join our events for a fun experience!</p>
+
+                        <div class="mt-6">
+                            <h4 class="header-font text-xl text-[var(--accent-gray)] mb-2">Upload Schedule</h4>
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 bg-[var(--primary-yellow)] text-[var(--accent-gray)] flex items-center justify-center mr-2">S</div>
+                                <span>Every Saturday or Sunday</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:w-1/2">
+                    <div class="card p-6">
+                        <h3 class="header-font text-2xl text-[var(--accent-gray)] mb-4">Channel Goals</h3>
+
+                        <div class="mb-6">
+                            <div class="flex items-center mb-2">
+                                <span class="w-6 h-6 bg-green-500 flex items-center justify-center mr-2 text-xs">✓</span>
+                                <span class="line-through">First 10 subscribers</span>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <span class="w-6 h-6 bg-[var(--primary-yellow)] flex items-center justify-center mr-2 text-xs">!</span>
+                                <span>Next: 50 subscribers (21/50)</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-6 h-6 bg-gray-600 flex items-center justify-center mr-2 text-xs">?</span>
+                                <span>Future: 100 subscribers</span>
+                            </div>
+                        </div>
+
+                        <h4 class="header-font text-xl text-[var(--accent-gray)] mb-2">Setup</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>Oculus Quest 3</li>
+                            <li>Main Game: Gorilla Tag</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events & Giveaways Section -->
+    <section id="events" class="py-20 section-bg relative overflow-hidden">
+        <div class="divider"></div>
+        <div class="container mx-auto px-6">
+            <h2 class="header-font text-3xl md:text-4xl text-[var(--accent-gray)] mb-12 text-center fade-in">
+                Events & Giveaways
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 fade-in">
+                <!-- Giveaway -->
+                <div class="event-card card p-6 text-center">
+                    <div class="text-4xl mb-4">🎁</div>
+                    <h3 class="header-font text-2xl mb-4">$15 Robux Gift Card Giveaway</h3>
+                    <p class="mb-4">Join our upcoming video for a chance to win a $15 Robux gift card! Stay tuned on The Whopper World Discord for details.</p>
+                    <a href="https://discord.gg/VEF9vkc7dU" target="_blank" class="button px-6 py-3 text-lg inline-flex items-center mx-auto">
+                        <i class="fab fa-discord mr-2"></i> Join Now
+                    </a>
+                </div>
+
+                <!-- Gorilla Tag Event -->
+                <div class="event-card card p-6 text-center">
+                    <div class="text-4xl mb-4">🐵</div>
+                    <h3 class="header-font text-2xl mb-4">Gorilla Tag Event</h3>
+                    <p class="mb-4">Join us in Gorilla Tag this Saturday at 8:00 PM! Use code <span class="font-bold">WHOPPERGO</span> to play with the community.</p>
+                    <a href="https://discord.gg/VEF9vkc7dU" target="_blank" class="button px-6 py-3 text-lg inline-flex items-center mx-auto">
+                        <i class="fab fa-discord mr-2"></i> Get Ready
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Section -->
+    <section id="videos" class="py-20 bg-[var(--secondary-white)] relative overflow-hidden">
+        <div class="divider"></div>
+        <div class="container mx-auto px-6">
+            <h2 class="header-font text-3xl md:text-4xl text-[var(--accent-gray)] mb-12 text-center fade-in">
+                Latest Video
+            </h2>
+
+            <div class="flex justify-center fade-in">
+                <a href="https://www.youtube.com/watch?v=3xnPSP5CVGQ" target="_blank" class="video-thumbnail card overflow-hidden max-w-md relative">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/3xnPSP5CVGQ/hqdefault.jpg?sqp=-oaymwEnCNACELwBSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCrPjeYV4p_Xc6mw-DBFm3i0irJsQ" alt="Latest Video Thumbnail" class="w-full h-auto">
+                        <div class="new-badge">NEW!</div>
+                        <div class="video-overlay">
+                            <span class="text-lg text-[var(--secondary-white)]">Play Now</span>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-2">Gorilla Tag Madness!</h3>
+                        <p class="text-sm text-[var(--accent-gray)]">Uploaded: 8 days ago</p>
+                        <p class="text-sm mt-2">Join the chaos in our latest Gorilla Tag adventure!</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="text-center mt-12 fade-in">
+                <a href="https://www.youtube.com/@MrWhopperJr/videos" target="_blank" class="button px-8 py-3 text-lg inline-flex items-center">
+                    <i class="fab fa-youtube mr-2"></i> View All Videos
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section id="community" class="py-20 section-bg relative overflow-hidden">
+        <div class="divider"></div>
+        <div class="container mx-auto px-6">
+            <h2 class="header-font text-3xl md:text-4xl text-[var(--accent-gray)] mb-12 text-center fade-in">
+                Join The Whopper World
+            </h2>
+
+            <div class="flex flex-col md:flex-row items-center fade-in">
+                <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8">
+                    <div class="card p-8 text-center">
+                        <div class="text-6xl text-[var(--primary-yellow)] mb-4">
+                            <i class="fab fa-discord"></i>
+                        </div>
+                        <h3 class="header-font text-2xl text-[var(--accent-gray)] mb-4">The Whopper World Community</h3>
+                        <p class="mb-6">Join our Discord for giveaways, events, early video access, and gaming sessions!</p>
+
+                        <div class="grid grid-cols-2 gap-4 mb-8">
+                            <div class="card p-3">
+                                <div class="text-3xl text-[var(--primary-yellow)] mb-2">5+</div>
+                                <div class="text-sm">MEMBERS</div>
+                            </div>
+                            <div class="card p-3">
+                                <div class="text-3xl text-[var(--primary-yellow)] mb-2">24/7</div>
+                                <div class="text-sm">CHAT</div>
+                            </div>
+                            <div class="card p-3">
+                                <div class="text-3xl text-[var(--primary-yellow)] mb-2">10+</div>
+                                <div class="text-sm">GAME NIGHTS</div>
+                            </div>
+                            <div class="card p-3">
+                                <div class="text-3xl text-[var(--primary-yellow)] mb-2">100%</div>
+                                <div class="text-sm">FUN</div>
+                            </div>
+                        </div>
+
+                        <a href="https://discord.gg/VEF9vkc7dU" target="_blank" class="button px-8 py-3 text-lg inline-flex items-center mx-auto">
+                            <i class="fab fa-discord mr-2"></i> Join Discord
+                        </a>
+                    </div>
+                </div>
+
+                <div class="md:w-1/2">
+                    <div class="card p-6">
+                        <h3 class="header-font text-2xl text-[var(--accent-gray)] mb-4">What's in the Server?</h3>
+
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-[var(--primary-yellow)] text-[var(--accent-gray)] flex items-center justify-center mr-3 mt-1 flex-shrink-0">1</div>
+                                <div>
+                                    <h4 class="font-bold text-lg">Giveaways & Events</h4>
+                                    <p class="text-sm">Win Robux and join epic gaming events like Gorilla Tag nights</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-[var(--primary-yellow)] text-[var(--accent-gray)] flex items-center justify-center mr-3 mt-1 flex-shrink-0">2</div>
+                                <div>
+                                    <h4 class="font-bold text-lg">Exclusive Content</h4>
+                                    <p class="text-sm">Behind-the-scenes and early video previews</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-[var(--primary-yellow)] text-[var(--accent-gray)] flex items-center justify-center mr-3 mt-1 flex-shrink-0">3</div>
+                                <div>
+                                    <h4 class="font-bold text-lg">Game Nights</h4>
+                                    <p class="text-sm">Weekly gaming sessions with the community</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-[var(--primary-yellow)] text-[var(--accent-gray)] flex items-center justify-center mr-3 mt-1 flex-shrink-0">4</div>
+                                <div>
+                                    <h4 class="font-bold text-lg">Suggest & Vote</h4>
+                                    <p class="text-sm">Help decide what games I play next</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[var(--accent-gray)] py-12 border-t-2 border-[var(--primary-yellow)]">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center space-x-2">
+                        <img src="https://yt3.ggpht.com/ljsJXx9Rol7NIkIY2dI69FcKEEjJ2fS6VuuFQpadfQ55-5ip6cr1lhe5wgibEiTRwrwYVQ2_aYI=s160-c-k-c0x00ffffff-no-rj" alt="MrWhopperJr Logo" class="w-12 h-12 logo">
+                        <div class="header-font text-2xl text-[var(--secondary-white)]">The Whopper World</div>
+                    </div>
+                    <p class="text-sm text-gray-400 mt-2">Weekly gaming content since 2025</p>
+                </div>
+
+                <div class="flex space-x-6 mb-6 md:mb-0">
+                    <a href="https://www.youtube.com/@mrwhopperjr" target="_blank" class="text-2xl text-[var(--primary-yellow)] hover:text-[var(--primary-yellow)] transition">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="https://discord.gg/VEF9vkc7dU" target="_blank" class="text-2xl text-[var(--primary-yellow)] hover:text-[var(--primary-yellow)] transition">
+                        <i class="fab fa-discord"></i>
+                    </a>
+                </div>
+
+                <div class="text-center md:text-right">
+                    <p class="text-sm text-gray-400">Created by MrWhopperJr</p>
+                    <p class="text-xs text-gray-500 mt-1">© 2025 All Rights Reserved</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Scroll animation
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        fadeElements.forEach(element => {
+            observer.observe(element);
+        });
+
+        // Easter egg - click the avatar
+        const avatar = document.querySelector('.avatar');
+        avatar.addEventListener('click', function() {
+            const img = this.querySelector('img');
+            img.src = 'https://img.icons8.com/emoji/96/000000/banana.png';
+            setTimeout(() => {
+                img.src = 'https://yt3.ggpht.com/ljsJXx9Rol7NIkIY2dI69FcKEEjJ2fS6VuuFQpadfQ55-5ip6cr1lhe5wgibEiTRwrwYVQ2_aYI=s160-c-k-c0x00ffffff-no-rj';
+            }, 1000);
+        });
+
+        /*
+        // Optional: Fetch subscriber count using YouTube Data API
+        // To enable real-time subscriber count, get an API key from Google Cloud Console
+        // and use the YouTube Data API v3 to fetch channel statistics.
+        // Example code (requires API key):
+        const apiKey = 'YOUR_API_KEY';
+        const channelId = 'UCxvP7SI96nSk2KexXoHSg9A';
+        fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`)
+            .then(response => response.json())
+            .then(data => {
+                const subscriberCount = data.items[0].statistics.subscriberCount;
+                const subCountElement = document.querySelector('.sub-count');
+                const progressFill = document.querySelector('.progress-fill');
+                subCountElement.textContent = `${subscriberCount}/50`;
+                const percentage = Math.min((subscriberCount / 50) * 100, 100);
+                progressFill.style.width = `${percentage}%`;
+            })
+            .catch(error => console.error('Error fetching subscriber count:', error));
+        */
+    </script>
+</body>
+</html>
